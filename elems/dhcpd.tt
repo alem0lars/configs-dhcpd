@@ -1,0 +1,66 @@
+# ─────────────────────────────────────────────────────────────────────────────┐
+#                                                                              │
+# Name:    elems/dhcpd                                                         │
+# Summary: DHCPD service configuration.                                        │
+# Authors:                                                                     │
+#   - Alessandro Molari <molari.alessandro@gmail.com> (alem0lars)              │
+#                                                                              │
+# Project:                                                                     │
+#   - Homepage:        https://github.com/alem0lars/configs-dhcpd              │
+#   - Getting started: see README.md in the project root folder                │
+#                                                                              │
+# License: Apache v2.0 (see below)                                             │
+#                                                                              │
+# ─────────────────────────────────────────────────────────────────────────────┤
+#                                                                              │
+# Licensed to the Apache Software Foundation (ASF) under one more contributor  │
+# license agreements.  See the NOTICE file distributed with this work for      │
+# additional information regarding copyright ownership. The ASF licenses this  │
+# file to you under the Apache License, Version 2.0 (the "License"); you may   │
+# not use this file except in compliance with the License.                     │
+# You may obtain a copy of the License at                                      │
+#                                                                              │
+#   http://www.apache.org/licenses/LICENSE-2.0                                 │
+#                                                                              │
+# Unless required by applicable law or agreed to in writing, software          │
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT    │
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.             │
+# See the License for the specific language governing permissions and          │
+# limitations under the License.                                               │
+#                                                                              │
+# ─────────────────────────────────────────────────────────────────────────────┤
+<% define_locals do
+  variable "dhcpd.iface", as: :iface
+end %>
+# ─────────────────────────────────────────────────────────────────────────────┘
+
+
+# If you require more than one instance of dhcpd you can create symbolic
+# links to dhcpd service like so
+#   cd /etc/init.d
+#   ln -s dhcpd dhcpd.foo
+#   cd ../conf.d
+#   cp dhcpd dhcpd.foo
+# Now you can edit dhcpd.foo and specify a different configuration file.
+# You'll also need to specify a pidfile in that dhcpd.conf file.
+# See the pid-file-name option in the dhcpd.conf man page for details.
+
+# If you wish to run dhcpd in a chroot, uncomment the following line
+# DHCPD_CHROOT="/var/lib/dhcp/chroot"
+
+# All file paths below are relative to the chroot.
+# You can specify a different chroot directory but MAKE SURE it's empty.
+
+# Specify a configuration file - the default is /etc/dhcp/dhcpd.conf
+DHCPD_CONF="/etc/dhcp/dhcpd.conf"
+
+# Configure which interface or interfaces to for dhcpd to listen on.
+# List all interfaces space separated. If this is not specified then
+# we listen on all interfaces.
+DHCPD_IFACE="<%= local! :iface %>"
+
+# Insert any other dhcpd options - see the man page for a full list.
+DHCPD_OPTS="-4"
+
+
+<%# vim: set filetype=eruby.conf : %>

@@ -1,0 +1,12 @@
+elems:
+
+  - src:  ^(dhcpd)$
+    dst:  /etc/conf.d/<1>
+    only: f?dhcpd && f?openrc
+
+  - src:  ^(dhcpd\.conf)$
+    dst:  /etc/dhcp/<1>
+    only: f?dhcpd
+
+
+# vim: set filetype=eruby.yaml :

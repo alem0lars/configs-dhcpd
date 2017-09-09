@@ -1,0 +1,41 @@
+# => inherits: generic <= #
+
+
+dhcpd:
+
+  iface: eth0
+
+  ddns_update_style: standard
+  log_facility: local7
+
+  domain_name: ea.local
+
+  subnets:
+    - address: 10.20.0.0
+      netmask: 255.255.0.0
+      default_lease_time: 600
+      max_lease_time: 7200
+      bootp_support: true
+      known_clients:
+        start_address: 10.20.0.1
+        end_address:   10.20.0.128
+      unknown_clients:
+        start_address: 10.20.0.129
+        end_address:   10.20.0.254
+      dns_servers:
+        - 10.20.254.254
+      ntp_servers:
+        - 10.20.254.254
+
+  hosts:
+    # TODO
+    # - mac_address:
+    #   address:
+    #   hostname:
+
+
+features:
+  - openrc
+
+
+# vim: set filetype=eruby.yaml :
