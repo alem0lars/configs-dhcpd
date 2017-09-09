@@ -11,27 +11,29 @@ dhcpd:
   domain_name: ea.local
 
   subnets:
-    - address: 10.20.0.0
-      netmask: 255.255.0.0
-      default_lease_time: 600
+    - bootp_support: true
       max_lease_time: 7200
-      bootp_support: true
+      default_lease_time: 600
+      address: 10.20.0.0
+      netmask: 255.255.0.0
+      broadcast_address: 10.20.255.255
       known_clients:
-        start_address: 10.20.0.1
-        end_address:   10.20.0.128
+        start_address: 10.20.1.1
+        end_address:   10.20.1.254
       unknown_clients:
-        start_address: 10.20.0.129
+        start_address: 10.20.0.1
         end_address:   10.20.0.254
       dns_servers:
         - 10.20.254.254
       ntp_servers:
         - 10.20.254.254
+      routers:
+        - 10.20.254.254
 
-  hosts:
-    # TODO
-    # - mac_address:
-    #   address:
-    #   hostname:
+  hosts: []
+    #- mac_address:
+    #  address: 10.20.254.254
+    #  hostname: eru
 
 features:
   - openrc

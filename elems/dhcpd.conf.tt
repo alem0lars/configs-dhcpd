@@ -38,17 +38,19 @@
 
   variable "dhcpd.subnets", as: :subnets
   variable "dhcpd.hosts", as: :hosts
+end %>
 
+<%
   def range(start_address, end_address, bootp_support)
     tokens = []
     tokens << "range"
-    tokens << "dynamic-bootp" if subnet[:bootp_support]
+    tokens << "dynamic-bootp" if bootp_support
     tokens << start_address
     tokens << end_address
 
     "#{tokens.join(" ")};"
   end
-end %>
+%>
 # ─────────────────────────────────────────────────────────────────────────────┘
 
 
@@ -86,7 +88,7 @@ subnet <%= subnet[:address] %> netmask <%= subnet[:netmask] %> {
         <%= range(subnet[:known_clients][:start_address],
                   subnet[:known_clients][:end_address],
                   subnet[:bootp_support]) %>
-        deny unknown-clients
+        deny unknown-clients;
       }
     <% end %>
     <% if subnet[:unknown_clients] %>
@@ -94,7 +96,7 @@ subnet <%= subnet[:address] %> netmask <%= subnet[:netmask] %> {
         <%= range(subnet[:unknown_clients][:start_address],
                   subnet[:unknown_clients][:end_address],
                   subnet[:bootp_support]) %>
-        allow unknown-clients
+        allow unknown-clients;
       }
     <% end %>
   <% end %>
@@ -102,9 +104,8 @@ subnet <%= subnet[:address] %> netmask <%= subnet[:netmask] %> {
   option domain-name-servers <%= subnet[:dns_servers].join(", ") %>;
   option ntp-servers <%= subnet[:ntp_servers].join(", ") %>;
 
-  # TODO
-  option broadcast-address 10.254.239.31;
-  option routers rtr-239-32-1.example.org;
+  option broadcast-address <%= subnet[:broadcast_address] %>;
+  option routers <%= subnet[:routers].join(", ") %>;
 }
 <% end %>
 
